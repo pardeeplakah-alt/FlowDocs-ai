@@ -3,13 +3,15 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: FlowDocs AI API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: spreadsheet
+    description: Spreadsheet processing operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,157 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /spreadsheet/clean:
+    post:
+      operationId: cleanSpreadsheet
+      tags: [spreadsheet]
+      summary: Clean spreadsheet data
+      description: Remove duplicates, empty rows, trim spaces, normalize headers
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SpreadsheetUploadInput"
+      responses:
+        "200":
+          description: Cleaned spreadsheet result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CleanResult"
+        "400":
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /spreadsheet/organize:
+    post:
+      operationId: organizeSpreadsheet
+      tags: [spreadsheet]
+      summary: Organize spreadsheet data
+      description: Sort by column, group similar records, reorder columns
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/OrganizeInput"
+      responses:
+        "200":
+          description: Organized spreadsheet result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrganizeResult"
+        "400":
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /spreadsheet/summary:
+    post:
+      operationId: summarizeSpreadsheet
+      tags: [spreadsheet]
+      summary: Generate spreadsheet summary
+      description: Analyze spreadsheet and return statistics and insights
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SpreadsheetUploadInput"
+      responses:
+        "200":
+          description: Spreadsheet summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SummaryResult"
+        "400":
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /spreadsheet/convert:
+    post:
+      operationId: convertSpreadsheet
+      tags: [spreadsheet]
+      summary: Convert spreadsheet format
+      description: Convert CSV to XLSX or XLSX to CSV
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SpreadsheetUploadInput"
+      responses:
+        "200":
+          description: Converted spreadsheet result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConvertResult"
+        "400":
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /spreadsheet/download/{fileId}:
+    get:
+      operationId: downloadSpreadsheet
+      tags: [spreadsheet]
+      summary: Download processed file
+      parameters:
+        - in: path
+          name: fileId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: File download
+        "404":
+          description: File not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /spreadsheet/columns:
+    post:
+      operationId: getSpreadsheetColumns
+      tags: [spreadsheet]
+      summary: Get column names from a spreadsheet
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SpreadsheetUploadInput"
+      responses:
+        "200":
+          description: Column list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ColumnsResult"
+        "400":
+          description: Invalid file
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +187,192 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    SpreadsheetUploadInput:
+      type: object
+      properties:
+        placeholder:
+          type: string
+          description: Placeholder field - actual file handled by multer
+
+    OrganizeInput:
+      type: object
+      properties:
+        sortColumn:
+          type: string
+        sortDirection:
+          type: string
+          enum: [asc, desc]
+
+    CleanResult:
+      type: object
+      properties:
+        fileId:
+          type: string
+        fileName:
+          type: string
+        totalRows:
+          type: integer
+        totalColumns:
+          type: integer
+        duplicatesRemoved:
+          type: integer
+        emptyRowsRemoved:
+          type: integer
+        spacesNormalized:
+          type: integer
+        headersNormalized:
+          type: boolean
+        datesNormalized:
+          type: integer
+        summary:
+          type: string
+      required:
+        - fileId
+        - fileName
+        - totalRows
+        - totalColumns
+        - duplicatesRemoved
+        - emptyRowsRemoved
+        - spacesNormalized
+        - headersNormalized
+        - datesNormalized
+        - summary
+
+    OrganizeResult:
+      type: object
+      properties:
+        fileId:
+          type: string
+        fileName:
+          type: string
+        totalRows:
+          type: integer
+        totalColumns:
+          type: integer
+        sortedBy:
+          type: ["string", "null"]
+        sortDirection:
+          type: ["string", "null"]
+        emptyRowsMovedToBottom:
+          type: integer
+        columnsReordered:
+          type: boolean
+        columnOrder:
+          type: array
+          items:
+            type: string
+        summary:
+          type: string
+      required:
+        - fileId
+        - fileName
+        - totalRows
+        - totalColumns
+        - sortedBy
+        - sortDirection
+        - emptyRowsMovedToBottom
+        - columnsReordered
+        - columnOrder
+        - summary
+
+    ColumnStat:
+      type: object
+      properties:
+        name:
+          type: string
+        missingCount:
+          type: integer
+        missingPct:
+          type: number
+        type:
+          type: string
+        uniqueValues:
+          type: integer
+      required:
+        - name
+        - missingCount
+        - missingPct
+        - type
+        - uniqueValues
+
+    SummaryResult:
+      type: object
+      properties:
+        totalRows:
+          type: integer
+        totalColumns:
+          type: integer
+        totalMissingValues:
+          type: integer
+        missingValuePct:
+          type: number
+        columnNames:
+          type: array
+          items:
+            type: string
+        columnStats:
+          type: array
+          items:
+            $ref: "#/components/schemas/ColumnStat"
+        keyInsights:
+          type: array
+          items:
+            type: string
+        overview:
+          type: string
+        fileId:
+          type: string
+      required:
+        - totalRows
+        - totalColumns
+        - totalMissingValues
+        - missingValuePct
+        - columnNames
+        - columnStats
+        - keyInsights
+        - overview
+        - fileId
+
+    ConvertResult:
+      type: object
+      properties:
+        fileId:
+          type: string
+        fileName:
+          type: string
+        originalFormat:
+          type: string
+        convertedFormat:
+          type: string
+        totalRows:
+          type: integer
+        totalColumns:
+          type: integer
+        summary:
+          type: string
+      required:
+        - fileId
+        - fileName
+        - originalFormat
+        - convertedFormat
+        - totalRows
+        - totalColumns
+        - summary
+
+    ColumnsResult:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: string
+      required:
+        - columns

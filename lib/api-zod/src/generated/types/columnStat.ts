@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface ColumnStat {
+  name: string;
+  missingCount: number;
+  missingPct: number;
+  type: string;
+  uniqueValues: number;
 }
