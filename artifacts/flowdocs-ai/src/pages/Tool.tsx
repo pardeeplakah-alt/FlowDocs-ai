@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSearch } from "wouter";
 import { 
   Wand2, ListOrdered, PieChart, RefreshCw, 
   UploadCloud, FileSpreadsheet, X, CheckCircle2, 
@@ -17,9 +18,18 @@ import { Footer } from "@/components/layout/Footer";
 
 type ActionType = "clean" | "organize" | "summary" | "convert";
 
+const VALID_ACTIONS: ActionType[] = ["clean", "organize", "summary", "convert"];
+
+function parseActionParam(search: string): ActionType | null {
+  const params = new URLSearchParams(search);
+  const val = params.get("action");
+  return val && VALID_ACTIONS.includes(val as ActionType) ? (val as ActionType) : null;
+}
+
 export default function Tool() {
   const { toast } = useToast();
-  const [action, setAction] = useState<ActionType | null>(null);
+  const search = useSearch();
+  const [action, setAction] = useState<ActionType | null>(() => parseActionParam(search));
   const [file, setFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

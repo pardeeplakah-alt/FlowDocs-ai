@@ -89,37 +89,45 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50">
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary">
-                  <Wand2 className="h-6 w-6" />
+              <Link href="/tool?action=clean">
+                <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50 cursor-pointer">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20 text-primary">
+                    <Wand2 className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Clean Data</h3>
+                  <p className="text-muted-foreground">Remove duplicates, eliminate empty rows, trim excess spaces, and normalize headers automatically.</p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Clean Data</h3>
-                <p className="text-muted-foreground">Remove duplicates, eliminate empty rows, trim excess spaces, and normalize headers automatically.</p>
-              </div>
+              </Link>
 
-              <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50">
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20 text-blue-400">
-                  <ListOrdered className="h-6 w-6" />
+              <Link href="/tool?action=organize">
+                <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50 cursor-pointer">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/20 text-blue-400">
+                    <ListOrdered className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Organize Data</h3>
+                  <p className="text-muted-foreground">Sort intelligently by column, group similar records, and reorder columns logically for better readability.</p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Organize Data</h3>
-                <p className="text-muted-foreground">Sort intelligently by column, group similar records, and reorder columns logically for better readability.</p>
-              </div>
+              </Link>
 
-              <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50">
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20 text-purple-400">
-                  <PieChart className="h-6 w-6" />
+              <Link href="/tool?action=summary">
+                <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50 cursor-pointer">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-purple-500/20 text-purple-400">
+                    <PieChart className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Generate Summary</h3>
+                  <p className="text-muted-foreground">Analyze your dataset instantly. Get crucial statistics, missing value percentages, and key insights.</p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Generate Summary</h3>
-                <p className="text-muted-foreground">Analyze your dataset instantly. Get crucial statistics, missing value percentages, and key insights.</p>
-              </div>
+              </Link>
 
-              <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50">
-                <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400">
-                  <RefreshCw className="h-6 w-6" />
+              <Link href="/tool?action=convert">
+                <div className="group relative rounded-2xl border border-white/10 bg-white/5 p-8 transition-all hover:bg-white/10 hover:border-primary/50 cursor-pointer">
+                  <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400">
+                    <RefreshCw className="h-6 w-6" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Convert Format</h3>
+                  <p className="text-muted-foreground">Seamlessly translate between CSV and XLSX formats without losing data integrity.</p>
                 </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">Convert Format</h3>
-                <p className="text-muted-foreground">Seamlessly translate between CSV and XLSX formats without losing data integrity.</p>
-              </div>
+              </Link>
             </div>
             
             <div className="mt-12 text-center">
