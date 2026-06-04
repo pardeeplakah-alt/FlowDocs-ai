@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Navbar } from "@/components/layout/Navbar";
 import { processFile, getColumns, downloadFile } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
-import { Footer } from "react-day-picker";
+import { Footer } from "@/components/layout/Footer";
 
 type ActionType = "clean" | "organize" | "summary" | "convert";
 
