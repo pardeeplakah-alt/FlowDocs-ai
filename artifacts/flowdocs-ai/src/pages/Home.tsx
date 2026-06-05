@@ -64,19 +64,6 @@ export default function Home() {
               Upload spreadsheet files, choose an action, and receive a processed result in seconds. Zero configuration, absolute precision.
             </motion.p>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-            >
-              <Link href="/tool">
-                <Button size="lg" className="w-full sm:w-auto text-base h-14 px-8 group">
-                  Start Processing
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-            </motion.div>
           </div>
         </section>
 
